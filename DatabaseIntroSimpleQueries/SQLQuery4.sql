@@ -21,3 +21,6 @@ INSERT INTO Minions(Id, Name, Age, TownId) VALUES
 (3, 'Steward', NULL, 2)
 
 SELECT * FROM MINIONS
+
+DROP TABLE Minions
+DROP TABLE Towns
