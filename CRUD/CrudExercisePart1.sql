@@ -82,16 +82,26 @@ SELECT *
 
 --Write a SQL query to create a view V_EmployeesSalaries with first name, 
 --last name and salary for each employee.
+GO
 CREATE VIEW V_EmployeesSalaries AS
 SELECT FirstName, LastName, Salary
 	FROM Employees
 
+GO
+SELECT *
+	FROM V_EmployeesSalaries
+	
 --Write a SQL query to create view V_EmployeeNameJobTitle with full employee name and job title.
 --When middle name is NULL replace it with empty string (‘’).
+GO
 CREATE VIEW V_EmployeeNameJobTitle AS
 SELECT FirstName + ' ' + ISNULL (MiddleName,'')
            + ' ' + LastName AS 'Full Name', JobTitle
 FROM Employees
+
+GO
+SELECT *
+	FROM V_EmployeeNameJobTitle
 
 --Write a SQL query to find all distinct job titles.
 SELECT DISTINCT JobTitle
