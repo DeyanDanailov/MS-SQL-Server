@@ -22,13 +22,6 @@ SELECT TOP(5) c.CountryName, r.RiverName
 	JOIN Continents AS co ON C.ContinentCode = co.ContinentCode
 	WHERE co.ContinentName = 'Africa'
 	ORDER BY c.CountryName
-	
-
-SELECT c.ContinentCode, cu.CurrencyCode, COUNT(C.CurrencyCode)
-	FROM Countries AS c
-	JOIN Continents AS co ON c.ContinentCode = co.ContinentCode
-	JOIN Currencies AS cu ON c.CurrencyCode = cu.CurrencyCode
-	GROUP BY C.CurrencyCode
 
 
 SELECT ContinentCode, CurrencyCode, CurrencyCount AS CurrencyUsage
@@ -47,3 +40,38 @@ FROM (SELECT ContinentCode,
       WHERE CurrencyCount > 1) AS CurrencyRankingQuery
 WHERE CurrencyRank=1
 ORDER BY ContinentCode
+
+SELECT COUNT(*) AS [Count] 
+	FROM Countries AS c
+	LEFT JOIN MountainsCountries AS mc ON c.CountryCode = mc.CountryCode
+	WHERE mc.MountainId IS NULL
+
+
+SELECT TOP(5) c.CountryName, 
+		MAX(p.Elevation) AS HighestPeakElevation,
+		MAX(r.Length) AS LongestRiverLength
+	FROM Countries AS c
+	LEFT JOIN CountriesRivers AS cr ON c.CountryCode = cr.CountryCode
+	LEFT JOIN Rivers AS r ON cr.RiverId = r.Id
+	LEFT JOIN MountainsCountries AS mc ON c.CountryCode = mc.CountryCode
+	LEFT JOIN Mountains AS m  ON mc.MountainId = m.Id
+	LEFT JOIN Peaks AS p ON m.Id = p.MountainId
+	GROUP BY c.CountryName
+	ORDER BY HighestPeakElevation DESC, 
+				LongestRiverLength DESC, 
+				c.CountryName
+
+
+SELECT TOP(5) c.CountryName, 
+		MAX(p.Elevation) AS HighestPeakElevation,
+		MAX(r.Length) AS LongestRiverLength
+	FROM Countries AS c
+	LEFT JOIN CountriesRivers AS cr ON c.CountryCode = cr.CountryCode
+	LEFT JOIN Rivers AS r ON cr.RiverId = r.Id
+	LEFT JOIN MountainsCountries AS mc ON c.CountryCode = mc.CountryCode
+	LEFT JOIN Mountains AS m  ON mc.MountainId = m.Id
+	LEFT JOIN Peaks AS p ON m.Id = p.MountainId
+	GROUP BY c.CountryName
+	ORDER BY HighestPeakElevation DESC, 
+				LongestRiverLength DESC, 
+				c.CountryName
