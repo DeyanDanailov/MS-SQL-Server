@@ -63,10 +63,19 @@ SELECT LEFT(FirstName, 1) AS FirstLetter
 	WHERE DepositGroup = 'Troll Chest'
 	GROUP BY LEFT(FirstName, 1)
 
-SELECT *
-	FROM
-(SELECT DepositGroup, IsDepositExpired, AVG(DepositInterest) AS AverageInterest
+SELECT DepositGroup, IsDepositExpired, AVG(DepositInterest) AS AverageInterest
 	FROM WizzardDeposits
-	GROUP BY DepositGroup, IsDepositExpired) AS ai
-	WHERE 
+	WHERE DepositStartDate > '1985-01-01'
+	GROUP BY DepositGroup, IsDepositExpired
+	ORDER BY DepositGroup DESC, IsDepositExpired
+	
+SELECT ABS(SUM([Difference])) AS SumDifference
+FROM (
+	SELECT 
+		FirstName												AS [Host Wizard],
+		DepositAmount											AS [Host Wizard Deposit],
+		LEAD(FirstName) OVER (ORDER BY Id)						AS [Guest Wizard],
+		LEAD(DepositAmount) OVER (ORDER BY Id)					AS [Guest Wizard Deposit],
+		LEAD(DepositAmount) OVER (ORDER BY Id) - DepositAmount	AS [Difference]
+	FROM WizzardDeposits) AS DepositDifferences
 	
