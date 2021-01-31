@@ -57,3 +57,16 @@ SELECT AgeGroup, COUNT(*) AS WizardCount
 	FROM WizzardDeposits) AS AgeRankQuery
 	GROUP BY AgeGroup
 	
+
+SELECT LEFT(FirstName, 1) AS FirstLetter
+	FROM WizzardDeposits
+	WHERE DepositGroup = 'Troll Chest'
+	GROUP BY LEFT(FirstName, 1)
+
+SELECT *
+	FROM
+(SELECT DepositGroup, IsDepositExpired, AVG(DepositInterest) AS AverageInterest
+	FROM WizzardDeposits
+	GROUP BY DepositGroup, IsDepositExpired) AS ai
+	WHERE 
+	
