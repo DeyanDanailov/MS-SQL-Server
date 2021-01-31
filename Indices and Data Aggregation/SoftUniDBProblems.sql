@@ -51,3 +51,41 @@ SELECT DepartmentID, MAX(Salary) AS MaxSalary
 SELECT COUNT(Salary) [Count]
 	FROM Employees
 	WHERE ManagerID IS NULL
+
+
+SELECT DepartmentID, Salary AS ThirdHighestSalary
+FROM (
+	SELECT DepartmentID, Salary,
+		DENSE_RANK() OVER (PARTITION BY DepartmentID ORDER BY Salary DESC) AS r
+	FROM Employees
+		GROUP BY DepartmentID, Salary) AS q
+		WHERE q.r = 3
+
+	/*SecondSolution*/
+SELECT DISTINCT DepartmentID, FORMAT(Salary, 'F2') AS ThirdHightestSalary
+FROM (SELECT DepartmentID,
+             Salary,
+             DENSE_RANK() OVER (PARTITION BY DepartmentID ORDER BY Salary DESC)
+                 AS SalaryRank
+      FROM Employees
+      ) AS SalaryRankingQuery
+WHERE SalaryRank = 3
+
+
+SELECT TOP(10) FirstName, LastName, e.DepartmentID
+FROM (
+	SELECT DepartmentID, AVG(Salary) AS AvgSalary
+		FROM Employees
+		GROUP BY DepartmentID) AS asq
+		JOIN Employees e ON asq.DepartmentID = e.DepartmentID
+		WHERE e.Salary > asq.AvgSalary
+
+SELECT TOP (10) E.FirstName, E.LastName, E.DepartmentID
+FROM Employees AS E
+WHERE E.Salary >
+      (
+          SELECT AVG(Salary) AS AverageSalary
+          FROM Employees AS eAverageSalary
+          WHERE eAverageSalary.DepartmentID = E.DepartmentID
+          GROUP BY DepartmentID)
+ORDER BY DepartmentID
