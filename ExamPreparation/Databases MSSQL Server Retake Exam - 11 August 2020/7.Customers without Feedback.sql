@@ -4,3 +4,4 @@ SELECT c.FirstName + ' ' + c.LastName AS [CustomerName],
 	FROM Customers c
 	LEFT JOIN Feedbacks f ON f.CustomerId = c.Id
 	WHERE f.CustomerId IS NULL
+	ORDER BY c.Id
