@@ -1,0 +1,7 @@
+SELECT pl.Name, pl.Seats, COUNT(pa.Id) AS [Passengers Count]
+	FROM Planes pl
+		LEFT JOIN Flights f ON f.PlaneId = pl.Id
+		LEFT JOIN Tickets t ON t.FlightId = f.Id
+		LEFT JOIN Passengers pa ON pa.Id = t.PassengerId
+		GROUP BY pl.Name, pl.Seats
+		ORDER BY COUNT (pa.Id) DESC
